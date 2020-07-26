@@ -1,7 +1,16 @@
 function [Output] = FBE_Flatten(FBEtensor,filter)
 
+% Accept the FBE M x N x P tensor that is organized as depth x freq band x
+% time. Accept the filter to create the weighted mean of across the
+% frequency bands; multiple acoustic energy by filter coefficient and get
+% the mean.
+
+% Author: Charles Taylor, 14JUL2020
+
+
+%Test arguments in and create filter if not given
 if nargin < 2 
-    %Good balance filter for frequencies
+    %Good balance filter for frequencies with no flow (static rise)
     filter = [0 .1 5 5 1 1 1 0 0];
 else
 end

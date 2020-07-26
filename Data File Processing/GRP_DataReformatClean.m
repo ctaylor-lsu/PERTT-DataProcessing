@@ -77,7 +77,7 @@ FileList = {'LSU_Gauge_PT_3502.22_.ftMD_Jan8-10_2020_rev.xlsx'};
 TargetFile = [FolderLoc,FileList{1}];
 
 %import extents of sheet
-Data = PTGaugeImport(TargetFile,1,[2,99999]);
+Data = PTGaugeImport(TargetFile,1,[2,999999]);
 
 PTGauge_Record = table2timetable(Data);
 
