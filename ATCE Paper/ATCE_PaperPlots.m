@@ -20,64 +20,64 @@ end
 %% Select Data
 
 %Which one you want to view: USER DEFINED
-run = 6;
+run = 2;
 
 %Trial Time and Number Descriptions
-Trial_Demarc = {'1/8/2020 12:15:00 PM' '1/8/2020 3:15:00 PM';   %1
+Run_Demarc = {'1/8/2020 12:15:00 PM' '1/8/2020 3:15:00 PM';   %1
     '1/8/2020 6:22:00 PM' '1/8/2020 7:40:00 PM';                %2
     '1/8/2020 8:50:00 PM' '1/9/2020 12:01:00 AM';               %3
     '1/9/2020 1:15:00 PM' '1/9/2020 4:18:00 PM';                %4
     '1/9/2020 8:08:00 PM' '1/9/2020 10:24:00 PM';               %5
     '1/9/2020 11:25:00 PM' '1/10/2020 4:30:00 AM';              %6
     '1/10/2020 10:47:00 AM' '1/10/2020 1:17:00 PM';};           %7
-Trial_Names = {'1' '2' '3' '4' '5' '7' '10'}';
+Run_Names = {'1' '2' '3' '4' '5' '7' '10'}';
 
 %Visualization preferences
-Run(1).plims = [-10 250 850 1500 2150];       %lower limits pressure plot
-Run(1).pwidth = 200;                          %pressure plot height
-Run(1).dpwindow = [-1200 1200];               %derivative plot limits
-Run(1).FBEfilter = [0 0 0 0 0 0 1 0 0];       %FBE band weighting
-Run(1).deltaT = 5;                            %time tick mark delta
-Run(1).DAScolor = [0 70];                     %caxis for DAS
+Run(1).plims = [-10 250 850 1500 2150];         %lower limits pressure plot
+Run(1).pwidth = 200;                            %pressure plot height
+Run(1).dpwindow = [-20 20];                     %derivative plot limits
+Run(1).FBEfilter = [0 0 0 0 0 0 1 0 0];         %FBE band weighting
+Run(1).deltaT = 5;                              %time tick mark delta
+Run(1).DAScolor = [0 70];                       %caxis for DAS
 
 Run(2).plims = [-10 250 850 1500 2150];       
 Run(2).pwidth = 200;                          
-Run(2).dpwindow = [-1200 1200];               
+Run(2).dpwindow = [-20 20];               
 Run(2).FBEfilter = [0 0 0 0 0 0 1 0 0];       
 Run(2).deltaT = 5;
 Run(2).DAScolor = [0 70];                     
 
 Run(3).plims = [-10 250 850 1450 2150];
 Run(3).pwidth = 200;
-Run(3).dpwindow = [-350 350];
+Run(3).dpwindow = [-10 10];
 Run(3).FBEfilter = [0 0 .45 .45 0 .05 .05 0 0];
 Run(3).deltaT = 10;
 Run(3).DAScolor = [0 70];
 
 Run(4).plims = [-10 250 850 1500 2150];
 Run(4).pwidth = 300;
-Run(4).dpwindow = [-1800 1800];
+Run(4).dpwindow = [-30 30];
 Run(4).FBEfilter = [0 0 0 0 0 1 0 0 0];
 Run(4).deltaT = 10;
 Run(4).DAScolor = [0 300];
 
 Run(5).plims = [-10 250 850 1500 2150];
 Run(5).pwidth = 500;
-Run(5).dpwindow = [-1800 1800];
+Run(5).dpwindow = [-30 30];
 Run(5).FBEfilter = [0 0 0 0 0 1 0 0 0];
 Run(5).deltaT = 10;
 Run(5).DAScolor = [0 300];
 
 Run(6).plims = [-10 250 850 1450 2150];
 Run(6).pwidth = 400;
-Run(6).dpwindow = [-250 250];
+Run(6).dpwindow = [-5 5];
 Run(6).FBEfilter = [0 0 .45 .45 0 .05 .05 0 0];
 Run(6).deltaT = 10;
 Run(6).DAScolor = [0 70];
 
 Run(7).plims = [-10 250 850 1450 2150];
 Run(7).pwidth = 700;
-Run(7).dpwindow = [-1200 1200];
+Run(7).dpwindow = [-20 20];
 Run(7).FBEfilter = [0 0 0 0 0 1 0 0 0];
 Run(7).deltaT = 10;
 Run(7).DAScolor = [0 1000];
@@ -88,16 +88,16 @@ Run(7).DAScolor = [0 1000];
 %-------
 %pull the timeseries subset and query dimensions for higher dim data
 %FBE
-FBE_tsout = getsampleusingtime(FBE_ts,Trial_Demarc{run,1},Trial_Demarc{run,2});
+FBE_tsout = getsampleusingtime(FBE_ts,Run_Demarc{run,1},Run_Demarc{run,2});
 [FBE_dim_depths,FBE_dim_bands,FBE_dim_time]=size(FBE_tsout.Data);
 
 %DTS
-DTS_tsout = getsampleusingtime(DTS_ts,Trial_Demarc{run,1},Trial_Demarc{run,2});
+DTS_tsout = getsampleusingtime(DTS_ts,Run_Demarc{run,1},Run_Demarc{run,2});
 [DTS_dim_depths,DTS_dim_bands,DTS_dim_time]=size(DTS_tsout.Data);
 
 %Pason
-start = datetime(Trial_Demarc{run,1},'Format','MM/dd/uuuu hh:mm:ss aa');
-stop = datetime(Trial_Demarc{run,2},'InputFormat','MM/dd/uuuu hh:mm:ss aa');
+start = datetime(Run_Demarc{run,1},'Format','MM/dd/uuuu hh:mm:ss aa');
+stop = datetime(Run_Demarc{run,2},'InputFormat','MM/dd/uuuu hh:mm:ss aa');
 TR = timerange(start,stop);
 Pason_ttout = Pason_Total_10sec(TR,:);
 
@@ -130,12 +130,12 @@ Signal = table2array(fillmissing(PTGauge_ttout,'linear'));
 DiffFilt = zeros(1,60);
 DiffFilt(1)=1;
 DiffFilt(end)=-1;
-PTGauge_ttoutd1 = 60*filter(DiffFilt,1,Signal);
+PTGauge_ttoutd1 = filter(DiffFilt,1,Signal);
 
 DiffFilt2 = zeros(1,6);
 DiffFilt2(1)=1;
 DiffFilt2(end)=-1;
-Pason_ttoutd1 = 60*filter(DiffFilt2,1,table2array(Pason_ttout));
+Pason_ttoutd1 = filter(DiffFilt2,1,table2array(Pason_ttout));
 
 %% visualize it
 
@@ -170,7 +170,7 @@ h(1) = subplot(bins_v,1,[1 2]);
     c1.Position = [.91 .77 .005 .15];
     c1.Label.String = 'Acoustic Energy';
     c1.Label.Position = [3.75 35.5 0];
-    title(['Trial ' Trial_Names{run}])
+    title(['Trial ' Run_Names{run}])
     % alpha(s,'z')
     % set(s,'alphadatamapping','scaled')
     % h(1).ALim = [0 1E3];
